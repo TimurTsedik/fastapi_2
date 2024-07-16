@@ -4,6 +4,7 @@
   API: FastAPI
 
   контейнеры: [db, web]  
+  credentials stored in .env
 
 ### 1 Запускаем контейнеры
 
