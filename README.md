@@ -1,3 +1,10 @@
+### Докеризированное приложение для объявлений
+  
+  DB: Postgres
+  API: FastAPI
+
+  контейнеры: [db, web]  
+
 ### 1 Запускаем контейнеры
 
 docker-compose up --build -d
