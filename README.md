@@ -10,30 +10,75 @@
 
 docker-compose up --build -d
 
-### 2 Создание объявления
+### 2.1 Создание юзера
 
-curl -X POST "http://localhost:8000/advertisements/" -H "Content-Type: application/json" -d '{
+curl -X POST "http://localhost:8000/user" -H "Content-Type: application/json" -d '{
+  "username": "testuser",
+  "password": "testpassword",
+  "group": "user"
+}'
+
+### 2.2 Создание админа
+
+curl -X POST "http://localhost:8000/user" -H "Content-Type: application/json" -d '{
+  "username": "admin",
+  "password": "testpassword",
+  "group": "admin"
+}'
+
+### 2.3 Создание второго юзера
+
+curl -X POST "http://localhost:8000/user" -H "Content-Type: application/json" -d '{
+  "username": "testuser2",
+  "password": "testpassword",
+  "group": "user"
+}'
+
+### 2.4 Логинимся юзером
+
+curl -X POST "http://localhost:8000/login" -H "Content-Type: application/json" -d '{
+  "username": "testuser",
+  "password": "testpassword"
+}'
+
+### 2.5 Создание объявления
+
+curl -X POST "http://localhost:8000/advertisement" \
+-H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
   "title": "Продам велосипед",
   "description": "Горный велосипед в отличном состоянии",
   "price": 10000,
-  "author": "Иван Иванов"
+  "author": "testuser"
 }'
 
-### 3 Получение объявления по ID:
+### 2.6 Логинимся юзером2
 
-curl -X GET "http://localhost:8000/advertisements/1"
-
-### 4 Изменение объявления по ID:
-
-curl -X PATCH "http://localhost:8000/advertisements/1" -H "Content-Type: application/json" -d '{
-  "price": 9000
+curl -X POST "http://localhost:8000/login" -H "Content-Type: application/json" -d '{
+  "username": "testuser2",
+  "password": "testpassword"
 }'
 
-### 5 Удаление объявления по ID:
+### 2.7 Попытка удалить объявление другого юзера
 
-curl -X DELETE "http://localhost:8000/advertisements/1"
+curl -X DELETE "http://localhost:8000/advertisement/1"
 
+Получаем отказ
 
-### 6 Просмотр документации:
+### 2.8 Логинимся админом
+
+curl -X POST "http://localhost:8000/login" -H "Content-Type: application/json" -d '{
+  "username": "admin",
+  "password": "testpassword"
+}'
+
+### 2.9 Удаляем объявление
+
+curl -X DELETE "http://localhost:8000/advertisement/1"
+
+Успех
+
+### 3 Просмотр документации:
 
 http://localhost:8000/docs
