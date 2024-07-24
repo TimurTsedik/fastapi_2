@@ -61,12 +61,18 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
 
 @app.post("/user", response_model=schemas.UserResponse)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    db_user = db.query(models.User).filter(models.User.username == user.username).first()
+    if db_user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Username already registered"
+        )
     hashed_password = utils.hash_password(user.password)
-    db_user = models.User(username=user.username, hashed_password=hashed_password, group=user.group)
-    db.add(db_user)
+    new_user = models.User(username=user.username, hashed_password=hashed_password, group=user.group)
+    db.add(new_user)
     db.commit()
-    db.refresh(db_user)
-    return db_user
+    db.refresh(new_user)
+    return new_user
 
 
 @app.get("/user/{user_id}", response_model=schemas.UserResponse)
