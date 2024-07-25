@@ -1,7 +1,8 @@
-### Докеризированное приложение для объявлений
+### Докеризированное приложение для объявлений с правами и авторизацией
   
   DB: Postgres
   API: FastAPI
+  токен: JWT
 
   контейнеры: [db, web]  
   credentials stored in .env
@@ -36,10 +37,9 @@ curl -X POST "http://localhost:8000/user" -H "Content-Type: application/json" -d
 
 ### 2.4 Логинимся юзером
 
-curl -X POST "http://localhost:8000/login" -H "Content-Type: application/json" -d '{
-  "username": "testuser",
-  "password": "testpassword"
-}'
+curl -X POST "http://localhost:8000/login" -H "Content-Type: application/x-www-form-urlencoded" 
+-d "username=testuser&password=testpassword"
+
 
 ### 2.5 Создание объявления
 
@@ -55,10 +55,9 @@ curl -X POST "http://localhost:8000/advertisement" \
 
 ### 2.6 Логинимся юзером2
 
-curl -X POST "http://localhost:8000/login" -H "Content-Type: application/json" -d '{
-  "username": "testuser2",
-  "password": "testpassword"
-}'
+curl -X POST "http://localhost:8000/login" -H "Content-Type: application/x-www-form-urlencoded"
+-d "username=testuser2&password=testpassword"
+
 
 ### 2.7 Попытка удалить объявление другого юзера
 
@@ -68,10 +67,9 @@ curl -X DELETE "http://localhost:8000/advertisement/1"
 
 ### 2.8 Логинимся админом
 
-curl -X POST "http://localhost:8000/login" -H "Content-Type: application/json" -d '{
-  "username": "admin",
-  "password": "testpassword"
-}'
+curl -X POST "http://localhost:8000/login" -H "Content-Type: application/x-www-form-urlencoded"
+-d "username=admin&password=testpassword"
+
 
 ### 2.9 Удаляем объявление
 
