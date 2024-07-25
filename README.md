@@ -3,6 +3,7 @@
   DB: Postgres
   API: FastAPI
   токен: JWT
+  роли: user, admin
 
   контейнеры: [db, web]  
   credentials stored in .env

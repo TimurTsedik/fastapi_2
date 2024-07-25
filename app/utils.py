@@ -1,3 +1,5 @@
+import os
+
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
@@ -12,7 +14,7 @@ from app.models import UserGroup
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-SECRET_KEY = "your_secret_key"
+SECRET_KEY = os.getenv("YOUR_SECRET_KEY")
 ALGORITHM = "HS256"
 
 def hash_password(password: str) -> str:
