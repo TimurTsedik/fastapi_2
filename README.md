@@ -1,18 +1,18 @@
-### Докеризированное приложение для объявлений с правами и авторизацией
-  
-  DB: Postgres
-  API: FastAPI
-  токен: JWT
-  роли: user, admin
+### Dockerized Advertisement Application with Roles and Authorization
 
-  контейнеры: [db, web]  
-  credentials stored in .env
+- **Database**: Postgres
+- **API**: FastAPI
+- **Token**: JWT
+- **Roles**: user, admin
 
-### 1 Запускаем контейнеры
+- **Containers**: [db, web]  
+- **Credentials**: Stored in `.env`
+
+### 1. Starting the Containers
 
 docker-compose up --build -d
 
-### 2.1 Создание юзера
+### 2.1 Creating a User
 
 curl -X POST "http://localhost:8000/user" -H "Content-Type: application/json" -d '{
   "username": "testuser",
@@ -20,7 +20,7 @@ curl -X POST "http://localhost:8000/user" -H "Content-Type: application/json" -d
   "group": "user"
 }'
 
-### 2.2 Создание админа
+### 2.2 Creating an Admin
 
 curl -X POST "http://localhost:8000/user" -H "Content-Type: application/json" -d '{
   "username": "admin",
@@ -28,7 +28,7 @@ curl -X POST "http://localhost:8000/user" -H "Content-Type: application/json" -d
   "group": "admin"
 }'
 
-### 2.3 Создание второго юзера
+### 2.3 Creating a Second User
 
 curl -X POST "http://localhost:8000/user" -H "Content-Type: application/json" -d '{
   "username": "testuser2",
@@ -36,48 +36,45 @@ curl -X POST "http://localhost:8000/user" -H "Content-Type: application/json" -d
   "group": "user"
 }'
 
-### 2.4 Логинимся юзером
+### 2.4 Logging in as the First User
 
 curl -X POST "http://localhost:8000/login" -H "Content-Type: application/x-www-form-urlencoded" 
 -d "username=testuser&password=testpassword"
 
-
-### 2.5 Создание объявления
+### 2.5 Creating an Advertisement
 
 curl -X POST "http://localhost:8000/advertisement" \
 -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
 -H "Content-Type: application/json" \
 -d '{
-  "title": "Продам велосипед",
-  "description": "Горный велосипед в отличном состоянии",
+  "title": "Selling a Bicycle",
+  "description": "Mountain bike in excellent condition",
   "price": 10000,
   "author": "testuser"
 }'
 
-### 2.6 Логинимся юзером2
+### 2.6 Logging in as the Second User
 
 curl -X POST "http://localhost:8000/login" -H "Content-Type: application/x-www-form-urlencoded"
 -d "username=testuser2&password=testpassword"
 
-
-### 2.7 Попытка удалить объявление другого юзера
+### 2.7 Attempting to Delete Another User's Advertisement
 
 curl -X DELETE "http://localhost:8000/advertisement/1"
 
-Получаем отказ
+You will receive a rejection.
 
-### 2.8 Логинимся админом
+### 2.8 Logging in as the Admin
 
 curl -X POST "http://localhost:8000/login" -H "Content-Type: application/x-www-form-urlencoded"
 -d "username=admin&password=testpassword"
 
-
-### 2.9 Удаляем объявление
+### 2.9 Deleting the Advertisement
 
 curl -X DELETE "http://localhost:8000/advertisement/1"
 
-Успех
+Success.
 
-### 3 Просмотр документации:
+### 3. Viewing the Documentation:
 
 http://localhost:8000/docs
